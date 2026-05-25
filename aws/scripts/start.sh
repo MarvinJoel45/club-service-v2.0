@@ -1,9 +1,22 @@
 #!/bin/bash
+set -e
 
-cd /home/ubuntu/club-service
+APP_DIR=/home/ubuntu/club-service
+JAR_NAME=club-service-v1.0.0.jar
+
+cd $APP_DIR
 
 echo "Starting application..."
 
-JAR_NAME=$(ls target/*.jar | head -n 1)
+source /etc/environment
 
-nohup java -XX:MaxRAMPercentage=95 -jar $JAR_NAME > app.log 2>&1 &
+pkill -f "$JAR_NAME" || true
+
+nohup java \
+  -XX:MaxRAMPercentage=95 \
+  -jar $JAR_NAME \
+  > app.log 2>&1 &
+
+echo $! > app.pid
+
+echo "Application started"
