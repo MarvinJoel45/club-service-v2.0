@@ -1,23 +1,42 @@
 services:
-  club-service:
-    image: club-service:latest
-    build:
-      context: .
-      target: latest
+  postgres:
+    image: postgres:18.3
+    container_name: postgres-club
+    restart: always
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminUser123
+      POSTGRES_DB: club_deportivo
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres18_data:/var/lib/postgresql
+
+volumes:
+  postgres18_data:
+
+#  club-service:
+#    image: club-service:latest
+#    build:
+#      context: .
+#      target: latest
 #      network: host
-    env_file:
-      - .env.local
+#    env_file:
+#      - .env.local
 #    environment:
 #      - "DATABASE_NAME=name"
 #      - "DATABASE_HOST=host"
 #      - "DATABASE_PASSWORD=password"
 #      - "DATABASE_PORT=port"
 #      - "DATABASE_USER=user"
-    ports:
-      - 8080:8080
-    networks:
-      - database-network
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - database-network
 
-networks:
-  database-network:
-    external: true
+#networks:
+#  database-network:
+#    external: true
