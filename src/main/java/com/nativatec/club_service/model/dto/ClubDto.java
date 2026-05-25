@@ -1,7 +1,6 @@
 package com.nativatec.club_service.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,12 +16,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ClubDto {
     private UUID id;
+
     private String code;
 
-    @NotBlank
     private String name;
 
-    @JsonProperty("logo_url")
+    @JsonProperty("foundation_date")
     private LocalDate foundationDate;
 
     @JsonProperty("district_code")

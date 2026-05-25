@@ -17,6 +17,9 @@ public class ClubRequestDto {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String code;
+
     @JsonProperty("foundation_date")
     private LocalDate foundationDate;
 

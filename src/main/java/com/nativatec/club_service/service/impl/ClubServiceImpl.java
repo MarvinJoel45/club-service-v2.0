@@ -8,6 +8,7 @@ import com.nativatec.club_service.model.dto.ClubDto;
 import com.nativatec.club_service.model.dto.ClubRequestDto;
 import com.nativatec.club_service.repository.ClubRepository;
 import com.nativatec.club_service.service.ClubService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,11 @@ import java.util.UUID;
 @Service
 public class ClubServiceImpl implements ClubService {
 
-    private final ClubRepository clubRepository;
+    @Autowired
+    private ClubRepository clubRepository;
     private final ClubMapper clubMapper;
 
-    public ClubServiceImpl(ClubRepository clubRepository, ClubMapper clubMapper) {
-        this.clubRepository = clubRepository;
+    public ClubServiceImpl(ClubMapper clubMapper) {
         this.clubMapper = clubMapper;
     }
 
