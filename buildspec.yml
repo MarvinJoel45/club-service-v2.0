@@ -27,13 +27,27 @@ phases:
 
   post_build:
     commands:
-      - echo "Build completed"
-      - ls -lah target/
+      - echo "Preparing deployment package"
+
+      # crear carpeta deploy
+      - mkdir -p deploy
+
+      # copiar jar final
+      - cp target/$JAR_NAME deploy/
+
+      # copiar appspec
+      - cp appspec.yml deploy/
+
+      # copiar scripts
+      - cp -r aws deploy/
+
+      - echo "Deployment package content:"
+      - ls -R deploy/
 
 artifacts:
   files:
-    - target/*.jar
-  discard-paths: yes
+    - '**/*'
+  base-directory: deploy
 
 cache:
   paths:
