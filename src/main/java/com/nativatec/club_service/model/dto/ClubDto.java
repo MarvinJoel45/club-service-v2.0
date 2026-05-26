@@ -27,7 +27,7 @@ public class ClubDto {
     @JsonProperty("district_code")
     private String districtCode;
 
-    private Boolean active;
+//    private Boolean active;
 
     @JsonProperty("logo_url")
     private String logoUrl;

@@ -80,8 +80,11 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public void delete(UUID id) {
-        this.clubRepository.findById(id)
-                .ifPresent(clubRepository::delete);
+        Club club = this.clubRepository.findById(id)
+                .orElseThrow(() -> new CustomException(Message.CLUB_NOT_FOUND, HttpStatus.NOT_FOUND.value()));
+
+        club.setActive(false);
+        this.clubRepository.save(club);
     }
 
     private ClubDto save(ClubRequestDto clubRequestDto) {
