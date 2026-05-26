@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface ClubService {
     ClubDto findById(UUID id);
     Page<ClubDto> findAll(Pageable pageable);
+    Page<ClubDto> findAllOnlyActives(Pageable pageable);
     ClubDto create(ClubRequestDto clubRequestDto);
     ClubDto update(UUID id, ClubRequestDto clubRequestDto);
     void delete(UUID id);
