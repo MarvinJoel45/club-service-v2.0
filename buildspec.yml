@@ -46,7 +46,9 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
+    - club-service-v1.0.0.jar
+    - appspec.yml
+    - aws/**/*
   base-directory: deploy
 
 cache:

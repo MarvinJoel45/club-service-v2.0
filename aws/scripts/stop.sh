@@ -1,7 +1,7 @@
 #!/bin/bash
 
-APP_DIR=/home/ubuntu/club-service
-PID_FILE=$APP_DIR/app.pid
+JAR_NAME=club-service-v1.0.0.jar
+PID_FILE=/var/run/club-service/app.pid
 
 echo "Stopping application..."
 
@@ -12,9 +12,9 @@ if [ -f "$PID_FILE" ]; then
         kill $PID
     fi
 
-    rm -f $PID_FILE
+    rm -f "$PID_FILE"
 fi
 
-pkill -f "club-service-v1.0.0.jar" || true
+pkill -f "$JAR_NAME" || true
 
 echo "Application stopped"

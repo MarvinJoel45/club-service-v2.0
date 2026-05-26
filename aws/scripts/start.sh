@@ -4,25 +4,35 @@ set -e
 APP_DIR=/home/ubuntu/club-service
 JAR_NAME=club-service-v1.0.0.jar
 
+LOG_DIR=/var/log/club-service
+RUN_DIR=/var/run/club-service
+
+LOG_FILE=$LOG_DIR/app.log
+PID_FILE=$RUN_DIR/app.pid
+
 echo "Starting application..."
 
+# cargar variables de entorno
 source /etc/environment || true
 
-mkdir -p $APP_DIR
+# crear directorios runtime
+mkdir -p $LOG_DIR
+mkdir -p $RUN_DIR
 
-touch $APP_DIR/app.log
-touch $APP_DIR/app.pid
+# permisos
+sudo chown -R ubuntu:ubuntu $LOG_DIR
+sudo chown -R ubuntu:ubuntu $RUN_DIR
 
-chmod 664 $APP_DIR/app.log
-chmod 664 $APP_DIR/app.pid
-
+# detener instancia previa
 pkill -f "$JAR_NAME" || true
 
+# iniciar aplicación
 nohup java \
   -XX:MaxRAMPercentage=95 \
   -jar "$APP_DIR/$JAR_NAME" \
-  > "$APP_DIR/app.log" 2>&1 &
+  > "$LOG_FILE" 2>&1 &
 
-echo $! > "$APP_DIR/app.pid"
+# guardar PID
+echo $! > "$PID_FILE"
 
 echo "Application started"
