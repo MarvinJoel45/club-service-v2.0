@@ -25,8 +25,9 @@ public class ClubController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ClubDto>> list(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.ok(this.service.findAll(pageable));
+    public ResponseEntity<Page<ClubDto>> list(@PageableDefault(sort = "name",page = 0, size = 10, direction =
+            Sort.Direction.ASC) Pageable pageable) {
+        return ResponseEntity.ok(this.service.findAllOnlyActives(pageable));
     }
 
     @GetMapping("/{id}")

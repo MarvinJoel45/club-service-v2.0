@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -27,14 +27,14 @@ public class ClubDto {
     @JsonProperty("district_code")
     private String districtCode;
 
-    private Boolean active;
+//    private Boolean active;
 
     @JsonProperty("logo_url")
     private String logoUrl;
 
-    @JsonProperty("created_at")
-    private LocalDateTime createdAt;
-
-    @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+//    @JsonProperty("created_at")
+//    private LocalDateTime createdAt;
+//
+//    @JsonProperty("updated_at")
+//    private LocalDateTime updatedAt;
 }
