@@ -1,0 +1,85 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build Maven Project
+        run: mvn -B clean package -DskipTests
+
+      - name: Create Deployment Package
+        run: |
+          mkdir deployment
+
+          cp appspec.yml deployment/
+          cp -r scripts deployment/
+
+          cp target/*.jar deployment/club-service.jar
+
+          cd deployment
+          zip -r ../deployment.zip .
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package
+          path: deployment.zip
+
+  deploy-prod:
+    name: Deploy Production
+
+    if: github.ref_name == 'main'
+
+    environment:
+      name: production
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Upload Package to S3
+        run: |
+          aws s3 cp deployment.zip \
+            s3://${{ secrets.AWS_BUCKET_NAME }}/deployments/${{ github.sha }}.zip
+
+      - name: Create CodeDeploy Deployment
+        run: |
+          aws deploy create-deployment \
+            --application-name "${{ vars.CODEDEPLOY_APPLICATION }}" \
+            --deployment-group-name "${{ vars.CODEDEPLOY_DEPLOYMENT_GROUP }}" \
+            --s3-location bucket=${{ secrets.AWS_BUCKET_NAME }},key=deployments/${{ github.sha }}.zip,bundleType=zip
