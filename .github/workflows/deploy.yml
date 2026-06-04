@@ -66,6 +66,11 @@ jobs:
         with:
           name: deployment-package
 
+      - name: Debug Branch
+        run: |
+          echo "REF=${GITHUB_REF}"
+          echo "REF_NAME=${GITHUB_REF_NAME}"
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
