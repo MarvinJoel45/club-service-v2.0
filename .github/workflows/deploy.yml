@@ -72,6 +72,9 @@ jobs:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Verify AWS Identity
+        run: aws sts get-caller-identity
+
       - name: Upload Package to S3
         run: |
           aws s3 cp deployment.zip \
