@@ -4,9 +4,12 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+
+import java.util.List;
 
 @Configuration
 @EnableSpringDataWebSupport(
@@ -31,6 +34,10 @@ public class OpenApiConfig {
 //                        .contact(new Contact().email(properties.getContactEmail()))
 //                        .license(new License().name(properties.getLicense()))
                         .version(properties.getVersion())
-                );
+                )
+                .servers(List.of(
+                        new Server()
+                                .url("https://d2f6iuo4ngvf3q.cloudfront.net")
+                ));
     }
 }
